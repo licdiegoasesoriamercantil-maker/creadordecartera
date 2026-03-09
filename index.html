@@ -253,7 +253,7 @@
     <div class="ptitle">08 &middot; Separar libros por</div>
     <div class="sopts">
       <label class="sopt on"><input type="checkbox" value="PRODUCTO" checked>&#128230; Por Producto</label>
-      <label class="sopt on"><input type="checkbox" value="GESTORES" checked>&#127991; Por Gestion</label>
+      <label class="sopt on"><input type="checkbox" value="TIPO_GESTION" checked>&#127991; Por Gestion</label>
       <label class="sopt"><input type="checkbox" value="ZONA">&#128506; Por Zona</label>
       <label class="sopt"><input type="checkbox" value="TERRITORIO">&#128205; Por Territorio</label>
     </div>
@@ -292,7 +292,7 @@ var COLS = [
   'ESTADO_CTE','ESTATUS_PLAN','ESTRATEGIA','FECHA_ULTIMO_PAGO','FIDIAPAGO',
   'GENERO_CLIENTE','GERENCIA','IMP_ULTIMO_PAGO','NOMBRE_CTE','PAGO_NORMAL',
   'POBLACION_CTE','PRODUCTO','SALDO','TEL_AVAL','TELEFONO1','TELEFONO2',
-  'TELEFONO3','TELEFONO4','TERRITORIO','GESTORES','ZONA'
+  'TELEFONO3','TELEFONO4','TERRITORIO','TIPO_GESTION','ZONA'
 ];
 
 var rawRows = [];    // cada elemento = array de valores alineado con srcHeaders
@@ -353,8 +353,8 @@ function load(file) {
 }
 
 function buildChips() {
-  var ti = srcHeaders.indexOf('GESTORES');
-  if (ti === -1) { log('GESTORES no encontrada en el archivo', 'w'); return; }
+  var ti = srcHeaders.indexOf('TIPO_GESTION');
+  if (ti === -1) { log('TIPO_GESTION no encontrada en el archivo', 'w'); return; }
 
   var seen = {}, vals = [];
   rawRows.forEach(function(row) {
@@ -571,7 +571,7 @@ async function process() {
 
   // --- Indices en srcHeaders ---
   var colMap      = COLS.map(function(c) { return srcHeaders.indexOf(c); });
-  var tiGestion   = srcHeaders.indexOf('GESTORES');
+  var tiGestion   = srcHeaders.indexOf('TIPO_GESTION');
   var tiClasif    = srcHeaders.indexOf('CLASIFICACION_CTE');
   var tiDique     = srcHeaders.indexOf('DIQUE');
   var tiProducto  = srcHeaders.indexOf('PRODUCTO');
@@ -584,7 +584,7 @@ async function process() {
   document.querySelectorAll('#chipsEstrategia .chip.on input').forEach(function(cb){ selEst.push(cb.value.toUpperCase().trim()); });
   var tiSortField = srcHeaders.indexOf(sortField);
 
-  if (tiGestion === -1) { err('El archivo no tiene columna GESTORES.'); return; }
+  if (tiGestion === -1) { err('El archivo no tiene columna TIPO_GESTION.'); return; }
 
   // --- FILTRAR ---
   var filtered = rawRows.filter(function(row) {
@@ -781,7 +781,7 @@ function toBlob(wb) {
 function addCard(t, blob) {
   var prefix = t.label.split('_')[0];
   var cc = t.label === 'TODOS' ? 'g' : t.label === 'SIN_TELEFONO' ? 'a' : prefix === 'PRODUCTO' ? 'p' : 'a';
-  var ico = t.label === 'TODOS' ? '&#128203;' : t.label === 'SIN_TELEFONO' ? '&#128561;' : prefix === 'PRODUCTO' ? '&#128230;' : prefix === 'GESTORES' ? '&#127991;' : '&#128196;';
+  var ico = t.label === 'TODOS' ? '&#128203;' : t.label === 'SIN_TELEFONO' ? '&#128561;' : prefix === 'PRODUCTO' ? '&#128230;' : prefix === 'TIPO_GESTION' ? '&#127991;' : '&#128196;';
   var card = document.createElement('div');
   card.className = 'card';
   card.style.animationDelay = (gr.children.length * .05) + 's';
